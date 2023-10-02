@@ -17,3 +17,23 @@ model User {
   updatedAt DateTime @updatedAt
   username  String   @unique
 }
+
+model Viagem {
+  aprovadaEm            DateTime?                      @map("aprovada_em")
+  comprovantes_enviados EnumViagemComprovantesEnviados @default(PENDENTE)
+  criadoEm              DateTime                       @default(dbgenerated("now()")) @map("criado_em")
+  deletadoEm            DateTime?                      @default(dbgenerated("null")) @map("deletado_em")
+  envioConcluido        Boolean                        @default(false) @map("envio_concluido")
+  id                    Int                            @id @default(autoincrement())
+  idExterno             String?                        @map("id_externo") @db.VarChar(64)
+  manifestado           Boolean                        @default(false)
+  rejeitadaEm           DateTime?                      @map("rejeitada_em")
+
+  @@map("viagens") @index([id_externo])
+}
+
+enum EnumViagemComprovantesEnviados {
+  PENDENTE
+  ENVIO_PARCIAL
+  ENVIADOS
+}
