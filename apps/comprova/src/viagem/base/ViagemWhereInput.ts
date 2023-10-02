@@ -13,12 +13,14 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional, IsEnum } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { ComprovanteWhereUniqueInput } from "../../comprovante/base/ComprovanteWhereUniqueInput";
 import { EnumViagemComprovantesEnviados } from "./EnumViagemComprovantesEnviados";
 import { DateTimeFilter } from "../../util/DateTimeFilter";
 import { BooleanFilter } from "../../util/BooleanFilter";
 import { IntFilter } from "../../util/IntFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { PontoDeEntregaWhereUniqueInput } from "../../pontoDeEntrega/base/PontoDeEntregaWhereUniqueInput";
 
 @InputType()
 class ViagemWhereInput {
@@ -32,6 +34,18 @@ class ViagemWhereInput {
     nullable: true,
   })
   aprovadaEm?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => ComprovanteWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ComprovanteWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ComprovanteWhereUniqueInput, {
+    nullable: true,
+  })
+  comprovantes?: ComprovanteWhereUniqueInput;
 
   @ApiProperty({
     required: false,
@@ -109,6 +123,18 @@ class ViagemWhereInput {
     nullable: true,
   })
   manifestado?: BooleanFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PontoDeEntregaWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => PontoDeEntregaWhereUniqueInput)
+  @IsOptional()
+  @Field(() => PontoDeEntregaWhereUniqueInput, {
+    nullable: true,
+  })
+  pontoDeEntregas?: PontoDeEntregaWhereUniqueInput;
 
   @ApiProperty({
     required: false,

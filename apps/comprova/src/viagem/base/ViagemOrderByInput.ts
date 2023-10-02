@@ -39,6 +39,17 @@ class ViagemOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
+  comprovantesId?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
   comprovantes_enviados?: SortOrder;
 
   @ApiProperty({
@@ -106,6 +117,17 @@ class ViagemOrderByInput {
     nullable: true,
   })
   manifestado?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
+  pontoDeEntregasId?: SortOrder;
 
   @ApiProperty({
     required: false,

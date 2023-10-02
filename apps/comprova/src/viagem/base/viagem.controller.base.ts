@@ -48,9 +48,30 @@ export class ViagemControllerBase {
   })
   async create(@common.Body() data: ViagemCreateInput): Promise<Viagem> {
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        comprovantes: data.comprovantes
+          ? {
+              connect: data.comprovantes,
+            }
+          : undefined,
+
+        pontoDeEntregas: data.pontoDeEntregas
+          ? {
+              connect: data.pontoDeEntregas,
+            }
+          : undefined,
+      },
       select: {
         aprovadaEm: true,
+
+        comprovantes: {
+          select: {
+            id: true,
+          },
+        },
+
         comprovantes_enviados: true,
         criadoEm: true,
         deletadoEm: true,
@@ -58,6 +79,13 @@ export class ViagemControllerBase {
         id: true,
         idExterno: true,
         manifestado: true,
+
+        pontoDeEntregas: {
+          select: {
+            id: true,
+          },
+        },
+
         rejeitadaEm: true,
       },
     });
@@ -81,6 +109,13 @@ export class ViagemControllerBase {
       ...args,
       select: {
         aprovadaEm: true,
+
+        comprovantes: {
+          select: {
+            id: true,
+          },
+        },
+
         comprovantes_enviados: true,
         criadoEm: true,
         deletadoEm: true,
@@ -88,6 +123,13 @@ export class ViagemControllerBase {
         id: true,
         idExterno: true,
         manifestado: true,
+
+        pontoDeEntregas: {
+          select: {
+            id: true,
+          },
+        },
+
         rejeitadaEm: true,
       },
     });
@@ -112,6 +154,13 @@ export class ViagemControllerBase {
       where: params,
       select: {
         aprovadaEm: true,
+
+        comprovantes: {
+          select: {
+            id: true,
+          },
+        },
+
         comprovantes_enviados: true,
         criadoEm: true,
         deletadoEm: true,
@@ -119,6 +168,13 @@ export class ViagemControllerBase {
         id: true,
         idExterno: true,
         manifestado: true,
+
+        pontoDeEntregas: {
+          select: {
+            id: true,
+          },
+        },
+
         rejeitadaEm: true,
       },
     });
@@ -149,9 +205,30 @@ export class ViagemControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          comprovantes: data.comprovantes
+            ? {
+                connect: data.comprovantes,
+              }
+            : undefined,
+
+          pontoDeEntregas: data.pontoDeEntregas
+            ? {
+                connect: data.pontoDeEntregas,
+              }
+            : undefined,
+        },
         select: {
           aprovadaEm: true,
+
+          comprovantes: {
+            select: {
+              id: true,
+            },
+          },
+
           comprovantes_enviados: true,
           criadoEm: true,
           deletadoEm: true,
@@ -159,6 +236,13 @@ export class ViagemControllerBase {
           id: true,
           idExterno: true,
           manifestado: true,
+
+          pontoDeEntregas: {
+            select: {
+              id: true,
+            },
+          },
+
           rejeitadaEm: true,
         },
       });
@@ -191,6 +275,13 @@ export class ViagemControllerBase {
         where: params,
         select: {
           aprovadaEm: true,
+
+          comprovantes: {
+            select: {
+              id: true,
+            },
+          },
+
           comprovantes_enviados: true,
           criadoEm: true,
           deletadoEm: true,
@@ -198,6 +289,13 @@ export class ViagemControllerBase {
           id: true,
           idExterno: true,
           manifestado: true,
+
+          pontoDeEntregas: {
+            select: {
+              id: true,
+            },
+          },
+
           rejeitadaEm: true,
         },
       });

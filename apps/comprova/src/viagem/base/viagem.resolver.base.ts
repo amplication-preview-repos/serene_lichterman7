@@ -26,6 +26,8 @@ import { ViagemCountArgs } from "./ViagemCountArgs";
 import { ViagemFindManyArgs } from "./ViagemFindManyArgs";
 import { ViagemFindUniqueArgs } from "./ViagemFindUniqueArgs";
 import { Viagem } from "./Viagem";
+import { Comprovante } from "../../comprovante/base/Comprovante";
+import { PontoDeEntrega } from "../../pontoDeEntrega/base/PontoDeEntrega";
 import { ViagemService } from "../viagem.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Viagem)
@@ -88,7 +90,21 @@ export class ViagemResolverBase {
   async createViagem(@graphql.Args() args: CreateViagemArgs): Promise<Viagem> {
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        comprovantes: args.data.comprovantes
+          ? {
+              connect: args.data.comprovantes,
+            }
+          : undefined,
+
+        pontoDeEntregas: args.data.pontoDeEntregas
+          ? {
+              connect: args.data.pontoDeEntregas,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -105,7 +121,21 @@ export class ViagemResolverBase {
     try {
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          comprovantes: args.data.comprovantes
+            ? {
+                connect: args.data.comprovantes,
+              }
+            : undefined,
+
+          pontoDeEntregas: args.data.pontoDeEntregas
+            ? {
+                connect: args.data.pontoDeEntregas,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -136,5 +166,47 @@ export class ViagemResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => Comprovante, {
+    nullable: true,
+    name: "comprovantes",
+  })
+  @nestAccessControl.UseRoles({
+    resource: "Comprovante",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldComprovantes(
+    @graphql.Parent() parent: Viagem
+  ): Promise<Comprovante | null> {
+    const result = await this.service.getComprovantes(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => PontoDeEntrega, {
+    nullable: true,
+    name: "pontoDeEntregas",
+  })
+  @nestAccessControl.UseRoles({
+    resource: "PontoDeEntrega",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldPontoDeEntregas(
+    @graphql.Parent() parent: Viagem
+  ): Promise<PontoDeEntrega | null> {
+    const result = await this.service.getPontoDeEntregas(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

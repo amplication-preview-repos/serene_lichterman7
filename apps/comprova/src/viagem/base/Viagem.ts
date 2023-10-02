@@ -14,13 +14,16 @@ import { ApiProperty } from "@nestjs/swagger";
 import {
   IsDate,
   IsOptional,
+  ValidateNested,
   IsEnum,
   IsBoolean,
   IsInt,
   IsString,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { Comprovante } from "../../comprovante/base/Comprovante";
 import { EnumViagemComprovantesEnviados } from "./EnumViagemComprovantesEnviados";
+import { PontoDeEntrega } from "../../pontoDeEntrega/base/PontoDeEntrega";
 
 @ObjectType()
 class Viagem {
@@ -34,6 +37,15 @@ class Viagem {
     nullable: true,
   })
   aprovadaEm!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => Comprovante,
+  })
+  @ValidateNested()
+  @Type(() => Comprovante)
+  @IsOptional()
+  comprovantes?: Comprovante | null;
 
   @ApiProperty({
     required: true,
@@ -98,6 +110,15 @@ class Viagem {
   @IsBoolean()
   @Field(() => Boolean)
   manifestado!: boolean;
+
+  @ApiProperty({
+    required: false,
+    type: () => PontoDeEntrega,
+  })
+  @ValidateNested()
+  @Type(() => PontoDeEntrega)
+  @IsOptional()
+  pontoDeEntregas?: PontoDeEntrega | null;
 
   @ApiProperty({
     required: false,

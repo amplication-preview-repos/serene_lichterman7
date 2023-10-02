@@ -10,7 +10,7 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, Viagem } from "@prisma/client";
+import { Prisma, Viagem, Comprovante, PontoDeEntrega } from "@prisma/client";
 
 export class ViagemServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -45,5 +45,21 @@ export class ViagemServiceBase {
     args: Prisma.SelectSubset<T, Prisma.ViagemDeleteArgs>
   ): Promise<Viagem> {
     return this.prisma.viagem.delete(args);
+  }
+
+  async getComprovantes(parentId: number): Promise<Comprovante | null> {
+    return this.prisma.viagem
+      .findUnique({
+        where: { id: parentId },
+      })
+      .comprovantes();
+  }
+
+  async getPontoDeEntregas(parentId: number): Promise<PontoDeEntrega | null> {
+    return this.prisma.viagem
+      .findUnique({
+        where: { id: parentId },
+      })
+      .pontoDeEntregas();
   }
 }

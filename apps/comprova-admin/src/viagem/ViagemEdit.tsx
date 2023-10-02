@@ -5,16 +5,27 @@ import {
   SimpleForm,
   EditProps,
   DateTimeInput,
+  ReferenceInput,
   SelectInput,
   BooleanInput,
   TextInput,
 } from "react-admin";
+
+import { ComprovanteTitle } from "../comprovante/ComprovanteTitle";
+import { PontoDeEntregaTitle } from "../pontoDeEntrega/PontoDeEntregaTitle";
 
 export const ViagemEdit = (props: EditProps): React.ReactElement => {
   return (
     <Edit {...props}>
       <SimpleForm>
         <DateTimeInput label="Aprovada Em" source="aprovadaEm" />
+        <ReferenceInput
+          source="comprovantes.id"
+          reference="Comprovante"
+          label="comprovantes"
+        >
+          <SelectInput optionText={ComprovanteTitle} />
+        </ReferenceInput>
         <SelectInput
           source="comprovantes_enviados"
           label="Comprovantes Enviados"
@@ -31,6 +42,13 @@ export const ViagemEdit = (props: EditProps): React.ReactElement => {
         <BooleanInput label="Envio Concluido" source="envioConcluido" />
         <TextInput label="Id Externo" source="idExterno" />
         <BooleanInput label="Manifestado" source="manifestado" />
+        <ReferenceInput
+          source="pontoDeEntregas.id"
+          reference="PontoDeEntrega"
+          label="PontoDeEntregas"
+        >
+          <SelectInput optionText={PontoDeEntregaTitle} />
+        </ReferenceInput>
         <DateTimeInput label="Rejeitada Em" source="rejeitadaEm" />
       </SimpleForm>
     </Edit>

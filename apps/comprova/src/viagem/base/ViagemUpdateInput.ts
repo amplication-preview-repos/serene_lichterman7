@@ -14,12 +14,15 @@ import { ApiProperty } from "@nestjs/swagger";
 import {
   IsDate,
   IsOptional,
+  ValidateNested,
   IsEnum,
   IsBoolean,
   IsString,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { ComprovanteWhereUniqueInput } from "../../comprovante/base/ComprovanteWhereUniqueInput";
 import { EnumViagemComprovantesEnviados } from "./EnumViagemComprovantesEnviados";
+import { PontoDeEntregaWhereUniqueInput } from "../../pontoDeEntrega/base/PontoDeEntregaWhereUniqueInput";
 
 @InputType()
 class ViagemUpdateInput {
@@ -33,6 +36,18 @@ class ViagemUpdateInput {
     nullable: true,
   })
   aprovadaEm?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => ComprovanteWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => ComprovanteWhereUniqueInput)
+  @IsOptional()
+  @Field(() => ComprovanteWhereUniqueInput, {
+    nullable: true,
+  })
+  comprovantes?: ComprovanteWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,
@@ -99,6 +114,18 @@ class ViagemUpdateInput {
     nullable: true,
   })
   manifestado?: boolean;
+
+  @ApiProperty({
+    required: false,
+    type: () => PontoDeEntregaWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => PontoDeEntregaWhereUniqueInput)
+  @IsOptional()
+  @Field(() => PontoDeEntregaWhereUniqueInput, {
+    nullable: true,
+  })
+  pontoDeEntregas?: PontoDeEntregaWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

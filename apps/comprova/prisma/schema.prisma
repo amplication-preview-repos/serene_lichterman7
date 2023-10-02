@@ -20,6 +20,7 @@ model User {
 
 model Viagem {
   aprovadaEm            DateTime?                      @map("aprovada_em")
+  comprovantes          Comprovante?
   comprovantes_enviados EnumViagemComprovantesEnviados @default(PENDENTE)
   criadoEm              DateTime                       @default(dbgenerated("now()")) @map("criado_em")
   deletadoEm            DateTime?                      @default(dbgenerated("null")) @map("deletado_em")
@@ -27,9 +28,40 @@ model Viagem {
   id                    Int                            @id @default(autoincrement())
   idExterno             String?                        @map("id_externo") @db.VarChar(64)
   manifestado           Boolean                        @default(false)
+  pontoDeEntregas       PontoDeEntrega?
   rejeitadaEm           DateTime?                      @map("rejeitada_em")
 
   @@map("viagens") @index([id_externo])
+}
+
+model Comprovante {
+  analisadoEm      DateTime?
+  aprovadoEm       DateTime?
+  createdAt        DateTime  @default(now())
+  deletadoEm       DateTime?
+  id               String    @id @default(cuid())
+  idExterno        String?
+  rejeitadoEm      DateTime?
+  resultadoAnalise Int?
+  tipoComprovante  String?
+  updatedAt        DateTime  @updatedAt
+  urlComprovante   String?
+  viagemId         Viagem    @relation(fields: [viagem_id], references: [id])
+  viagem_id        Int       @unique
+
+  @@map("comprovantes")
+}
+
+model PontoDeEntrega {
+  createdAt      DateTime @default(now())
+  id             String   @id @default(cuid())
+  idPontoEntrega String
+  latitude       String
+  longitude      String
+  nomePonto      String?
+  updatedAt      DateTime @updatedAt
+  viagemId       Viagem   @relation(fields: [viagem_id], references: [id])
+  viagem_id      Int      @unique
 }
 
 enum EnumViagemComprovantesEnviados {
